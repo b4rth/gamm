@@ -21,13 +21,11 @@ public class IndexServlet extends HttpServlet {
 
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Affichage de la page d'inscription */
-		List<Magasin> magasinList = magasinController.recupererMagasins();
 		
-		if(magasinList != null && magasinList.size() > 1) {
-			request.setAttribute("magasin1", magasinList.get(0));
-			request.setAttribute("magasin2", magasinList.get(1));
-		}
-		
+		List<Magasin> magasinList = magasinController.recupererMagasins();		
+		if(magasinList != null) {
+			request.setAttribute("magasins", magasinList);
+		}		
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
 

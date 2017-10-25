@@ -1,5 +1,7 @@
 package fr.bart.gamm.model;
 
+import java.text.Normalizer;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -81,6 +83,27 @@ public class Adresse {
 	
 	public String toString() {
 		return numero + " " + rue + " " + codePostal + " " + ville;
+	}
+	
+	public String getAdresseForURL() {
+		String result = "";
+		result += (numero != null ? numero : "") + "+" + normalizeString(rue) + "+" + (codePostal != null ? codePostal : "") + "+" + normalizeString(ville); 
+		return result;
+	}
+	
+	private String normalizeString(String s) {
+		if(s != null) {
+			return stripAccents(s.trim().replace("\t", "+").replace(" ", "+"));
+		} else {
+			return "";
+		}
+	}
+	
+	private String stripAccents(String s) 
+	{
+	    s = Normalizer.normalize(s, Normalizer.Form.NFD);
+	    s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+	    return s;
 	}
 	
 }
