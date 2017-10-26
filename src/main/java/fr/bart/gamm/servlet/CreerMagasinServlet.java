@@ -8,8 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.bart.gamm.controller.MagasinController;
-import fr.bart.gamm.model.Adresse;
+import fr.bart.gamm.dao.MagasinDao;
 import fr.bart.gamm.model.Magasin;
 
 @WebServlet( urlPatterns = { "/creerMagasin" } )
@@ -17,7 +16,7 @@ public class CreerMagasinServlet extends HttpServlet {
 	
 	public static final String VUE = "/WEB-INF/jsp/magasin.jsp";
 	
-	private MagasinController magasinController = new MagasinController();
+	private MagasinDao magasinDao = new MagasinDao();
 
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 		String numero = request.getParameter("numero");
@@ -42,10 +41,8 @@ public class CreerMagasinServlet extends HttpServlet {
 			}			
 		}
 		
-		Magasin magasin = new Magasin();
-		Adresse adresse = new Adresse(numeroInt, rue, codePostalInt, ville);
-		magasin.setAdresse(adresse);
-		magasinController.creerMagasin(magasin);
+		Magasin magasin = new Magasin(numeroInt, rue, codePostalInt, ville, null);
+		magasinDao.create(magasin);
 		
 		response.sendRedirect("magasin");
     }

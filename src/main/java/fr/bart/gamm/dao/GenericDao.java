@@ -49,6 +49,15 @@ public class GenericDao<T> {
         em.getTransaction().commit();
     }
      
+     public void deleteById(int id) {
+    	 em.getTransaction().begin();
+    	 T t = read(id);
+    	 if(t != null) {
+    		 delete(t);
+    	 }
+    	 em.getTransaction().commit();
+     }
+     
      private List<T> findAll(Class<T> entityClass) {    	 
          return findAll(entityClass, "id", false);
      }

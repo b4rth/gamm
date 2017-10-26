@@ -28,7 +28,7 @@
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
 		        <li class="active"><a href="index">Carte<span class="sr-only">(current)</span></a></li>
-		        <li><a href="magasin">Gestion des magasins</a></li>
+		        <li><a href="magasin">Magasins</a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
@@ -39,9 +39,7 @@
 			if(request.getAttribute("magasins") != null && request.getAttribute("magasins") instanceof List<?>) {
 				try {
 					for(Magasin magasin : (List<Magasin>)request.getAttribute("magasins")) {
-						if(magasin.getAdresse() != null) {
-							adressesUrl += "\'" + magasin.getAdresse().getAdresseForURL() + "\',";							
-						}
+						adressesUrl += "\'" + magasin.getAdresseForURL() + "\',";							
 					}
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -52,7 +50,6 @@
 
 		<div class="container">
 			<div style="width: 1000px; height: 600px;" id="map_canvas"></div>
-			<h1>test</h1>
 			<script type="text/javascript">
 	
 			    var map;

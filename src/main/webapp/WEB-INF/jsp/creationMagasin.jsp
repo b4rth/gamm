@@ -1,10 +1,11 @@
 <%@page import="fr.bart.gamm.model.Magasin"%>
 <%@page import="java.util.List"%>
+<%@page import="fr.bart.gamm.util.Action"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <html>
 	<head>
-	  	<title>Bootstrap Example</title>
+	  	<title>Gamm2Vert</title>
 	  	<meta charset="utf-8">
 	  	<meta name="viewport" content="width=device-width, initial-scale=1">
 	  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -31,8 +32,8 @@
 		    	<!-- Collect the nav links, forms, and other content for toggling -->
 		    	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      		<ul class="nav navbar-nav">
-		        		<li><a href="index">Calcul de distance</a></li>
-		        		<li><a class="active" href="magasin">Gestion des magasins</a></li>
+		        		<li><a href="index">Carte</a></li>
+		        		<li><a class="active" href="magasin">Magasins</a></li>
 		     		 </ul>
 		    	</div><!-- /.navbar-collapse -->
 		  	</div><!-- /.container-fluid -->
@@ -40,9 +41,9 @@
 
 		<div class="container">
 			
-			<form action="creerMagasin">
+			<form action="magasin">
 			  <div class="form-group">
-			    <label for="numero">Email address</label>
+			    <label for="numero">Numéro</label>
 			    <input type="number" class="form-control" id="numero" name="numero" placeholder="Numéro">
 			  </div>
 			  <div class="form-group">
@@ -50,13 +51,14 @@
 			    <input type="text" class="form-control" id="rue" name="rue" placeholder="Rue">
 			  </div>
 			  <div class="form-group">
-			    <label for="codePostal">Email address</label>
+			    <label for="codePostal">Code postal</label>
 			    <input type="number" class="form-control" id="codePostal" name="codePostal" placeholder="Code Postal">
 			  </div>
 			  <div class="form-group">
 			    <label for="ville">Ville</label>
 			    <input required="true" type="text" class="form-control" id="ville" name="ville" placeholder="Ville">
 			  </div>
+			  <input type="hidden" name="action" value="<% out.print(Action.CREATE.getLabel());%>" />
 			  <button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		  	

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.bart.gamm.controller.MagasinController;
+import fr.bart.gamm.dao.MagasinDao;
 import fr.bart.gamm.model.Magasin;
 
 @WebServlet( urlPatterns = { "/index" } )
@@ -17,12 +17,12 @@ public class IndexServlet extends HttpServlet {
 	
 	public static final String VUE = "/WEB-INF/jsp/index.jsp";
 	
-	private MagasinController magasinController = new MagasinController();
+	private MagasinDao magasinController = new MagasinDao();
 
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Affichage de la page d'inscription */
 		
-		List<Magasin> magasinList = magasinController.recupererMagasins();		
+		List<Magasin> magasinList = magasinController.findAll();		
 		if(magasinList != null) {
 			request.setAttribute("magasins", magasinList);
 		}		
