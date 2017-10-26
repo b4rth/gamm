@@ -60,7 +60,6 @@
 				  mapTypeId: google.maps.MapTypeId.ROADMAP
 				});
 	
-			    //var addresses = ['Norway', 'Africa', 'Asia'];
 			    var addresses = <% out.println(adressesUrl); %>;
 			    for (var x = 0; x < addresses.length; x++) {
 			        $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM', null, function (data) {
