@@ -2,6 +2,7 @@ package fr.bart.gamm.servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,10 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import antlr.StringUtils;
 import fr.bart.gamm.dao.MagasinDao;
+import fr.bart.gamm.map.MapUtils;
 import fr.bart.gamm.model.Magasin;
 import fr.bart.gamm.util.Action;
+import fr.bart.gamm.util.Couple;
 
 @WebServlet( urlPatterns = { "/magasin" } )
 public class MagasinServlet extends HttpServlet {
@@ -38,27 +40,32 @@ public class MagasinServlet extends HttpServlet {
 					String codePostal = request.getParameter("codePostal");
 					String ville = request.getParameter("ville");
 					
-					Integer codePostalInt = null;
-					Integer numeroInt = null;
-					if(codePostal != null && !"".equals(codePostal)) {
-						try {
-							codePostalInt = Integer.parseInt(codePostal);
-						} catch(Exception e) {
-							e.printStackTrace();
-						}			
-					}
-					if(numero != null && !"".equals(numero)) {
-						try {
-							numeroInt = Integer.parseInt(numero);
-						} catch(Exception e) {
-							e.printStackTrace();
-						}			
-					}
 					
-					Magasin magasin = new Magasin(numeroInt, rue, codePostalInt, ville, null);
-					magasinDao.create(magasin);
+					Couple<Float, Float> latLong = MapUtils.getLatLong(numero, rue, codePostal, ville);
+					if(latLong == null || latLong.getElement1() == null || latLong.getElement2() == null) {
+						System.out.println("Création de l'entreprise impossible, latitude et longitude indéterminées");
+					} else {
+						Integer codePostalInt = null;
+						Integer numeroInt = null;
+						if(codePostal != null && !"".equals(codePostal)) {
+							try {
+								codePostalInt = Integer.parseInt(codePostal);
+							} catch(Exception e) {
+								e.printStackTrace();
+							}			
+						}
+						if(numero != null && !"".equals(numero)) {
+							try {
+								numeroInt = Integer.parseInt(numero);
+							} catch(Exception e) {
+								e.printStackTrace();
+							}			
+						}						
+						Magasin magasin = new Magasin(numeroInt, rue, codePostalInt, ville, null, latLong.getElement1(), latLong.getElement2());
+						magasinDao.create(magasin);						
+					}					
 					
-					response.sendRedirect("magasin");
+					response.sendRedirect("magasin");						
 					break;
 				case DELETE :
 					supprimerMagasin(request);
@@ -102,6 +109,8 @@ public class MagasinServlet extends HttpServlet {
 			request.setAttribute(MAGASINS, magasinList);
 		}
     }
+    
+
    
 	
 }

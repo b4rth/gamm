@@ -31,6 +31,12 @@ public class Magasin {
 	@Column(name = "ville")
 	private String ville;
 	
+	@Column(name = "latitude")
+	private Float latitude;
+	
+	@Column(name = "longitude")
+	private Float longitude;
+	
 	@ManyToOne(cascade = {CascadeType.ALL})
 	private Type type;	
 	
@@ -45,6 +51,17 @@ public class Magasin {
 		this.codePostal = codePostal;
 		this.ville = ville;
 		this.type = type;
+	}
+	
+	public Magasin(Integer numero, String rue, Integer codePostal, String ville, Type type, float lat, float lng) {
+		super();
+		this.numero = numero;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.type = type;
+		this.latitude = lat;
+		this.longitude = lng;
 	}
 
 	public String getAdresseForURL() {

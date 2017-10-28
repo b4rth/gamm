@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import fr.bart.gamm.map.MapUtils;
 import fr.bart.gamm.model.Magasin;
+import fr.bart.gamm.util.Couple;
 import junit.framework.Assert;
 
 public class MapUtilsTest {
@@ -26,4 +27,13 @@ public class MapUtilsTest {
 		MapUtils.distanceEntreAdresse("8+rue+de+la+barre+angers", "la+pironniere+ballée");
 	}
 
+	
+	@Test
+	public void getLatLongTest() {
+		Couple<Float, Float> angersCoor = MapUtils.getLatLong("8", "rue de la barre", "49000", "Angers");
+		if(angersCoor != null) {
+			System.out.println(angersCoor.getElement1());
+			System.out.println(angersCoor.getElement2());
+		}
+	}
 }

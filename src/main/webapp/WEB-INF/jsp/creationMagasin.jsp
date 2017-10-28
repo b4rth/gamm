@@ -12,6 +12,22 @@
 	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	  	
+	  	<script type="text/javascript">
+		  	function updateMap() {		  		
+		  		var numero = document.getElementById('numero').value;
+		  		var rue = document.getElementById('rue').value;
+		  		var codePostal = document.getElementById('codePostal').value;
+		  		var ville = document.getElementById('ville').value;
+		  		
+		  		var address = numero + "+" + rue + "+" +  codePostal + "+" + ville;
+		  		var url = "https://www.google.com/maps/embed/v1/place?q=" + address + "&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM"; 
+		  		document.getElementById('mapPreview').setAttribute("src", url);
+		  		
+		  		var iframe = document.getElementById('mapPreview');
+		  		iframe.src = iframe.src;              
+		  	}
+	  	</script>
+	  	
 	</head>
 	
 	<body>
@@ -26,7 +42,7 @@
 			        	<span class="icon-bar"></span>
 			        	<span class="icon-bar"></span>
 			      	</button>
-			      	<a class="navbar-brand" href="#">Brand</a>
+			      	<a class="navbar-brand" href="#">Gamm2Vert</a>
 		    	</div>
 		
 		    	<!-- Collect the nav links, forms, and other content for toggling -->
@@ -59,10 +75,14 @@
 			    <input required="true" type="text" class="form-control" id="ville" name="ville" placeholder="Ville">
 			  </div>
 			  <input type="hidden" name="action" value="<% out.print(Action.CREATE.getLabel());%>" />
-			  <button type="submit" class="btn btn-primary">Submit</button>
+			  <button type="submit" class="btn btn-primary">Créer</button>
+			  <a onclick="updateMap();" class="btn btn-primary">Localiser</a>
 			</form>
+			
+			<iframe id="mapPreview" width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=France&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM"></iframe> 
 		  	
 		</div>
+		
 		
 	</body>
 </html>
