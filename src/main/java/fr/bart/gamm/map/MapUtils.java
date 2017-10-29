@@ -21,16 +21,24 @@ public class MapUtils {
 		return map;
 	}
 	
+	public static boolean AdresseExiste(String adresse) {
+		boolean result = false;
+		if(adresse != null && !"".equals(adresse)) {
+			String addressNormalize = StringUtil.Normalize(adresse).replaceAll("\\s+","+");;
+			String httpResult = HttpUtils.executePost("https://maps.googleapis.com/maps/api/geocode/json", "address=" + addressNormalize + "&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM");
+			JSONObject jsonObj = new JSONObject(httpResult);
+			if(jsonObj.get("status") != null && jsonObj.get("status").equals("OK")) {
+				result = true;
+			}
+		}
+		return result;
+	}
+	
 	public static boolean AdresseExiste(Magasin magasin) {
 		
 		boolean result = false;
 		if(magasin != null) {
-			String adresse = magasin.getAdresseForURL();
-			String httpResult = HttpUtils.executePost("https://maps.googleapis.com/maps/api/geocode/json", "address=" + adresse + "&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM");
-			JSONObject jsonObj = new JSONObject(httpResult);
-			if(jsonObj.get("status") != null && jsonObj.get("status").equals("OK")) {
-				return true;
-			}
+			result = AdresseExiste(magasin.getAdresse());
 		}			
 		return result;
 		

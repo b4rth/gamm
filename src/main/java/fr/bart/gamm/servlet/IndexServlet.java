@@ -16,12 +16,14 @@ import fr.bart.gamm.dao.MagasinDao;
 import fr.bart.gamm.map.MapUtils;
 import fr.bart.gamm.model.Magasin;
 import fr.bart.gamm.util.Action;
+import fr.bart.gamm.util.Error;
 import fr.bart.gamm.util.Couple;
 
 @WebServlet( urlPatterns = { "/index" } )
 public class IndexServlet extends HttpServlet {
 	
-	public static final String VUE = "/WEB-INF/jsp/index.jsp";
+	public static final String VUE_INDEX = "/WEB-INF/jsp/index.jsp";
+	public static final String VUE_DISTANCE = "/WEB-INF/jsp/distance.jsp";
 	
 	private MagasinDao magasinController = new MagasinDao();
 
@@ -38,7 +40,17 @@ public class IndexServlet extends HttpServlet {
 				case SEARCH_NEAR_STORES:
 					if(request.getParameter("address") != null && request.getParameter("address") instanceof String) {
 						String adresse = (String)request.getParameter("address");
-						listeDesMagasinsProches(adresse, 5);
+						if(MapUtils.AdresseExiste(adresse)) {
+							Map<Magasin, Couple<Integer, Integer>> magasins = listeDesMagasinsProches(adresse, 4);
+							request.setAttribute("magasinsAvecDistance", magasins);
+							request.setAttribute("adresseRenseignee", adresse);
+							this.getServletContext().getRequestDispatcher( VUE_DISTANCE ).forward( request, response );								
+						} else { //adresse renseignee n'existe pas
+							request.setAttribute("error", Error.ADDRESS_DOES_NOT_EXIST);
+							redirectToIndex(request, response);
+						}
+					} else {
+						redirectToIndex(request, response);
 					}
 					break;
 				default:
@@ -54,7 +66,7 @@ public class IndexServlet extends HttpServlet {
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 
 
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( VUE_INDEX ).forward( request, response );
     }
 	
     public void redirectToIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,12 +74,12 @@ public class IndexServlet extends HttpServlet {
 		if(magasinList != null) {
 			request.setAttribute("magasins", magasinList);
 		}		
-		this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );		
+		this.getServletContext().getRequestDispatcher( VUE_INDEX ).forward( request, response );		
     }
     
-    private Map<Couple<Integer, Integer>, Magasin> listeDesMagasinsProches(String adresse, int nbMagasin) {
+    private Map<Magasin, Couple<Integer, Integer>> listeDesMagasinsProches(String adresse, int nbMagasin) {
     	Map<Double, Magasin> mapVolOiseau = new HashMap<Double, Magasin>();
-    	Map<Couple<Integer, Integer>, Magasin> mapResult = new HashMap<Couple<Integer, Integer>, Magasin>();
+    	Map<Magasin, Couple<Integer, Integer>> mapResult = new HashMap<Magasin, Couple<Integer, Integer>>();
     	List<Magasin> magasinList = magasinController.findAll();
     	
     	Couple<Float, Float> latLongAdresse = MapUtils.getLatLong(adresse);
@@ -83,10 +95,11 @@ public class IndexServlet extends HttpServlet {
     	int i = 0;
     	for(Map.Entry<Double, Magasin> e : mapVolOiseauSorted.entrySet()) {
     		if(i < nbMagasin) {
-    			mapResult.put(MapUtils.distanceEntreAdresseByGoogleApi(adresse, e.getValue().getAdresse()), e.getValue()) ;
+    			mapResult.put(e.getValue(), MapUtils.distanceEntreAdresseByGoogleApi(adresse, e.getValue().getAdresse())) ;
     		} else {
     			break;
     		}
+    		i++;
     	}    	
 	
     	return mapResult;

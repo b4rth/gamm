@@ -1,4 +1,5 @@
 <%@page import="fr.bart.gamm.util.Action"%>
+<%@page import="fr.bart.gamm.util.Error"%>
 <%@ page import="java.util.List" %>
 <%@ page import="fr.bart.gamm.model.Magasin" %>
 <html>
@@ -50,6 +51,12 @@
 		%>
 
 		<div class="container">
+		
+			<%
+				if(request.getAttribute("error") != null) {
+					out.println("<div class=\"alert alert-danger\">" + ((Error)request.getAttribute("error")).getMessage() + "</div>");
+				}
+			%>		
 		
 			<form action="index">
 				<div class="input-group">
