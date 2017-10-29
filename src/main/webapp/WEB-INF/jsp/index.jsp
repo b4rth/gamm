@@ -1,3 +1,4 @@
+<%@page import="fr.bart.gamm.util.Action"%>
 <%@ page import="java.util.List" %>
 <%@ page import="fr.bart.gamm.model.Magasin" %>
 <html>
@@ -49,31 +50,68 @@
 		%>
 
 		<div class="container">
-			<div style="width: 1000px; height: 600px;" id="map_canvas"></div>
+		
+			<form action="index">
+				<div class="input-group">
+				   <input type="text" class="form-control float-left" id="address" name="address" placeholder="Rentrez une adresse pour trouver les magasins les plus proches">
+				   <input type="hidden" name="action" value="<% out.print(Action.SEARCH_NEAR_STORES.getLabel());%>" />
+				   <span class="input-group-btn">
+				        <button type="submit" class="btn btn-primary float-right">Rechercher</button>
+				   </span>
+				</div>
+			</form>
+		
+			<div style="width: 100%; height: 600px;" id="map_canvas"></div>
+		  
+		  
 			<script type="text/javascript">
-	
-			    var map;
-			    var elevator;
-			    var map = new google.maps.Map(document.getElementById('map_canvas'), {
-				  zoom: 8,
-				  center: new google.maps.LatLng(47.46, -0.55),
-				  mapTypeId: google.maps.MapTypeId.ROADMAP
+				var locations = [				                 
+					<% 
+						if(request.getAttribute("magasins") != null && request.getAttribute("magasins") instanceof List<?>) {
+							try {
+								String tab = "";
+								int i = 1; 
+								for(Magasin magasin : (List<Magasin>)request.getAttribute("magasins")) {
+									if(magasin.getLatitude() != null && magasin.getLongitude() != null) {
+										tab += "['" + magasin.getAdresse() + "', " + magasin.getLatitude() + ", " + magasin.getLongitude() + ", " + i + "],";
+										i++;									
+									}
+								}
+								if (tab != null && tab.length() > 0) {
+									tab = tab.substring(0, tab.length() - 1);
+							    }
+								out.println(tab);
+							} catch(Exception e) {
+								e.printStackTrace();
+							}
+						}
+					%>
+				];
+				
+				var map = new google.maps.Map(document.getElementById('map_canvas'), {
+					zoom: 8,
+					center: new google.maps.LatLng(47.46, -0.55),
+					mapTypeId: google.maps.MapTypeId.ROADMAP
 				});
-	
-			    var addresses = <% out.println(adressesUrl); %>;
-			    for (var x = 0; x < addresses.length; x++) {
-			        $.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM', null, function (data) {
-			            var p = data.results[0].geometry.location
-			            var latlng = new google.maps.LatLng(p.lat, p.lng);
-			            new google.maps.Marker({
-			                position: latlng,
-			                map: map
-			            });
-	
-			        });
-			    }
-	
-		  </script>
+
+				var infowindow = new google.maps.InfoWindow();
+
+				var marker, i;		
+				for (i = 0; i < locations.length; i++) {  
+  					marker = new google.maps.Marker({
+    					position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+    					map: map
+  					});
+
+					google.maps.event.addListener(marker, 'click', (function(marker, i) {
+	    				return function() {
+      						infowindow.setContent(locations[i][0]);
+      						infowindow.open(map, marker);
+    					}
+  					})(marker, i));
+				}
+			</script>
+		  
 		</div>
 		
 

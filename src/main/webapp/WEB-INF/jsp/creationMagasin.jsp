@@ -75,11 +75,12 @@
 			    <input required="true" type="text" class="form-control" id="ville" name="ville" placeholder="Ville">
 			  </div>
 			  <input type="hidden" name="action" value="<% out.print(Action.CREATE.getLabel());%>" />
-			  <button type="submit" class="btn btn-primary">Créer</button>
+			  <p><i>Pensez à vérifier la validité de l'adresse en cliquant sur le boutton "localiser"</i></p>
 			  <a onclick="updateMap();" class="btn btn-primary">Localiser</a>
+			  <button type="submit" class="btn btn-primary">Créer</button>
 			</form>
 			
-			<iframe id="mapPreview" width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=France&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM"></iframe> 
+			<iframe width="100%" id="mapPreview" width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=France&key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM"></iframe> 
 		  	
 		</div>
 		

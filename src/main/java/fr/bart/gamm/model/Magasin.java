@@ -85,6 +85,9 @@ public class Magasin {
 	    return s;
 	}	
 	
+	public String getAdresse() {
+		return (numero != null ? numero : "") + " " + (rue != null ? rue : "") + " " + (codePostal != null ? codePostal : "") + " " + (ville != null ? ville : "");
+	}
 	
 	public int getId() {
 		return id;
@@ -133,9 +136,22 @@ public class Magasin {
 	public void setType(Type type) {
 		this.type = type;
 	}
-	
 
-	
+	public Float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
+
+	public Float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
+	}
 	
 	
 }

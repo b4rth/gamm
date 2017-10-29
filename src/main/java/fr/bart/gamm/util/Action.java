@@ -3,6 +3,7 @@ package fr.bart.gamm.util;
 public enum Action {
 	
 	CREATE("create"),
+	SEARCH_NEAR_STORES("chercherMagasinsProches"),
 	DELETE("delete");
 	
 	private String label;

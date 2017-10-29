@@ -21,11 +21,6 @@ public class MapUtilsTest {
 		Assert.assertEquals(false, exist2);
 		
 	}
-	
-	@Test
-	public void distanceEntreAdresse() {
-		MapUtils.distanceEntreAdresse("8+rue+de+la+barre+angers", "la+pironniere+ballée");
-	}
 
 	
 	@Test
@@ -35,5 +30,18 @@ public class MapUtilsTest {
 			System.out.println(angersCoor.getElement1());
 			System.out.println(angersCoor.getElement2());
 		}
+		
+		Couple<Float, Float> angersCoor2 = MapUtils.getLatLong("8 rue de la barre 49000 Angers");
+		if(angersCoor2 != null) {
+			System.out.println(angersCoor2.getElement1());
+			System.out.println(angersCoor2.getElement2());
+		}		
+	}
+	
+	@Test
+	public void distanceEntreAdresseByGoogleApiTest() {
+		Couple<Integer, Integer> distance = MapUtils.distanceEntreAdresseByGoogleApi("8 rue de la barre angers", "la pironnière ballée");
+		System.out.println("Distance en m : " + distance.getElement1());
+		System.out.println("Distance en temps (s) : " + distance.getElement2());
 	}
 }
