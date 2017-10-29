@@ -12,8 +12,21 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script type="text/javascript">
-			function loadTrajet() {
-				
+			var adresseDepart = "";
+			<%
+				String adresseDepart = ""; 
+				if(request.getAttribute("adresseRenseignee") != null) {
+					adresseDepart = (String)request.getAttribute("adresseRenseignee");
+					adresseDepart = StringUtil.Normalize(adresseDepart).replaceAll("\\s+","+");		
+			    }
+				out.println("var adresseDepart = \'" + adresseDepart + "\';");
+			%>
+			function loadTrajet(adresse) {
+				alert(adresse);
+				var url = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM&origin=" + adresseDepart + "&destination=" + adresse + "&avoid=tolls|highways";
+				document.getElementById('mapDistance').setAttribute("src", url);
+				var iframe = document.getElementById('mapDistance');
+				iframe.src = iframe.src;
 			}
 		</script>
 	  
@@ -82,11 +95,11 @@
 				</div>
 			</form>
 		
-			<div>
-				<iframe width="70%"  height="450" frameborder="0" style="border:0" class="float-right"  
+			<div class="row">
+				<iframe class="col-md-8"  height="450" frameborder="0" style="border:0" class="float-right" id="mapDistance"
 					src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3yymmxg6KgmbSsetDC8feIDZvF-aoXhM&origin=<% out.println(adresseRenseignee); %>&destination=<% out.println(adresseDestination); %>&avoid=tolls|highways" allowfullscreen>
 				</iframe>
-				<div class="float-right" style="width:25%;">
+				<div class="col-md-4">
 					<div class="list-group">
 					
 						<%
@@ -95,9 +108,9 @@
 									Map<Magasin, Couple<Integer, Integer>> magasins = (Map<Magasin, Couple<Integer, Integer>>)request.getAttribute("magasinsAvecDistance");
 									
 									for(Map.Entry<Magasin, Couple<Integer, Integer>> e : magasins.entrySet()) {
-										out.println("<a href=\"#\" onclick=\"loadTrajet()\" class=\"list-group-item list-group-item-action flex-column align-items-start\">");
+										out.println("<a href=\"#\" onclick=\"loadTrajet(\'" + StringUtil.Normalize(e.getKey().getAdresse()).replaceAll("\\s+","+") + "\')\" class=\"list-group-item list-group-item-action flex-column align-items-start\">");
 										out.println("<p class=\"mb-1\"><b>" + e.getKey().getAdresse() + "</b></p>");
-										out.println("<p class=\"mb-1\"><i>Distance : </i>" + Integer.valueOf(e.getValue().getElement1())/1000 + "</p>");
+										out.println("<p class=\"mb-1\"><i>Distance : </i>" + Float.valueOf(e.getValue().getElement1())/1000 + "</p>");
 										out.println("<p class=\"mb-1\"><i>Temps : </i>" + e.getValue().getElement2() + "</p>");
 				  						out.println("</a>");
 									}

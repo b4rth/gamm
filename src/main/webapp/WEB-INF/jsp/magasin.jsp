@@ -5,7 +5,7 @@
     pageEncoding="ISO-8859-1"%>
 <html>
 	<head>
-	  	<title>Bootstrap Example</title>
+	  	<title>Magasins</title>
 	  	<meta charset="utf-8">
 	  	<meta name="viewport" content="width=device-width, initial-scale=1">
 	  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -26,14 +26,12 @@
 				    td1 = tr[i].getElementsByTagName("td")[1];
 				    td2 = tr[i].getElementsByTagName("td")[2];
 				    td3 = tr[i].getElementsByTagName("td")[3];
-				    td4 = tr[i].getElementsByTagName("td")[4];
 
-		    		if(td0 || td1 || td2 || td3 || td4) {
+		    		if(td0 || td1 || td2 || td3) {
 			      		if ((td0 != null && td0.innerHTML.toUpperCase().indexOf(filter) > -1) || 
 			      				(td1 != null && td1.innerHTML.toUpperCase().indexOf(filter) > -1) || 
 			      				(td2 != null && td2.innerHTML.toUpperCase().indexOf(filter) > -1) || 
-			      				(td3 != null && td3.innerHTML.toUpperCase().indexOf(filter) > -1) || 
-			      				(td4 != null && td4.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+			      				(td3 != null && td3.innerHTML.toUpperCase().indexOf(filter) > -1)) {
 			        		tr[i].style.display = "";
 			      		} else {
 			        		tr[i].style.display = "none";
@@ -107,7 +105,6 @@
 		        		<th>Rue</th>
 		        		<th>Code postal</th>
 		        		<th>Ville</th>
-		        		<th>Type</th>
 		        		<th></th>
 		      		</tr>
 		    	</thead>
@@ -118,15 +115,15 @@
 			    			for(Magasin magasin : magasinList) {
 			    				out.println("<tr>");
 		    					out.println("<td>" + (magasin.getNumero() != null ? magasin.getNumero() : "-") + "</td>");
-		    					out.println("<td>" + (magasin.getRue() != null ? magasin.getRue() : "-") + "</td>");
+		    					out.println("<td>" + (magasin.getRue() != null || "".equals(magasin.getRue()) ? magasin.getRue() : "-") + "</td>");
 		    					out.println("<td>" + (magasin.getCodePostal() != null ? magasin.getCodePostal() : "-") + "</td>");
-		    					out.println("<td>" + (magasin.getVille() != null ? magasin.getVille() : "-") + "</td>");
+		    					out.println("<td>" + (magasin.getVille() != null || "".equals(magasin.getVille()) ? magasin.getVille() : "-") + "</td>");
 
-			    				if(magasin.getType() != null && magasin.getType().getLabel() != null) {
+			    				/*if(magasin.getType() != null && magasin.getType().getLabel() != null) {
 			    					out.println("<td>" + magasin.getType().getLabel() + "</td>");		    					
 			    				} else {
 			    					out.println("<td></td>");
-			    				}
+			    				}*/
 			    				
 			    				out.println("<td><button class=\"btn btn-default\" data-href=\"magasin?action=" + Action.DELETE.getLabel() + "&id=" + magasin.getId() + "\" data-toggle=\"modal\" data-target=\"#confirm-delete\">Supprimer</button><td>");
 			    				

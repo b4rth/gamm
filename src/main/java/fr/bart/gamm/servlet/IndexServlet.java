@@ -90,8 +90,13 @@ public class IndexServlet extends HttpServlet {
     			}
     		}    		
     	}
+    	    	
+    	Map<Double, Magasin> mapVolOiseauSorted = new TreeMap<Double, Magasin>(mapVolOiseau);
     	
-    	Map<Double, Magasin> mapVolOiseauSorted = new TreeMap<Double, Magasin>(mapVolOiseau);    	
+    	for(Map.Entry<Double, Magasin> e : mapVolOiseauSorted.entrySet()) {
+    		System.out.println("Distance avec " + e.getValue().getAdresse() + " : " + e.getKey());
+    	}
+    	
     	int i = 0;
     	for(Map.Entry<Double, Magasin> e : mapVolOiseauSorted.entrySet()) {
     		if(i < nbMagasin) {
